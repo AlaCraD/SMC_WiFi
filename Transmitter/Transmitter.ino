@@ -1,18 +1,26 @@
-
-#include <SPI.h>                                          // Подключаем библиотеку для работы с шиной SPI
-#include <nRF24L01.h>                                     // Подключаем файл настроек из библиотеки RF24
-#include <RF24.h>                                         // Подключаем библиотеку для работы с nRF24L01+
-#include <RF24_config.h>
+#include <SPI.h>
+#include <RF24.h>
+#include <RF24_config.h>                                       // Подключаем библиотеку для работы с nRF24L01+
+/*      
+ *       RF24
+ * Черный - GND
+ * Красный - 3.3V
+ * Оранжевый - 13 pin
+ * Белый - 12 pin
+ * Желтый - 11 pin
+ * Фиолетовый - 10 pin 
+ * Зеленый - 9 pin 
+ * 
+ *     RS232-UART  
+ * Фиолетовый - 5V
+ * Синий - TX(Arduino) и RXD(RS232-UART)
+ * Зеленый - RX(Arduino) и TXD(RS232-UART)
+ * Желтый - GND
+ */
 
 RF24           radio(9, 10);                              // Создаём объект radio для работы с библиотекой RF24, указывая номера выводов nRF24L01+ (CE, CSN)
-                                   // Создаём массив для приёма данных
-//byte           sum=255;
+
 byte           temp=0;
-byte           count=0;
-const byte     SIZE=32;
-byte           data[SIZE];
-int            i;
-byte           summ[] = {10,10,10,10,10,10,10,10,10,90};
 
 void setup(){
     Serial.begin(115200);
@@ -26,20 +34,8 @@ void setup(){
     radio.powerUp();
 }
 void loop(){
-    
     while(Serial.available()){
         temp = Serial.read();
-        //temp = count++;
         radio.writeFast(&temp, 1);
-        //Serial.write(temp);
-        //data[count] = temp;
-        //count++;
     }
-    // считываем показания Trema потенциометра с вывода A2 и записываем их в 1 элемент массива data
-    
-    //radio.write(&summ, sizeof(summ));
-    
-    
-
-    // отправляем данные из массива data указывая сколько байт массива мы хотим отправить. Отправить данные можно с проверкой их доставки: if( radio.write(&data, sizeof(data)) ){данные приняты приёмником;}else{данные не приняты приёмником;}
 }

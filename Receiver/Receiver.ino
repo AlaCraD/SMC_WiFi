@@ -1,16 +1,20 @@
-#include <nrf_hal.h>
-
-#include <nRF24L01.h>
-#include <printf.h>
+#include <SPI.h>
 #include <RF24.h>
 #include <RF24_config.h>
+/*
+ * Черный - GND
+ * Красный - 3.3V
+ * Оранжевый - 13 pin
+ * Белый - 12 pin
+ * Желтый - 11 pin
+ * Фиолетовый - 10 pin 
+ * Зеленый - 9 pin 
+ */
+
 
 RF24           radio(9, 10);
 
-const byte     SIZE=32;
-byte           data[SIZE];
-byte           i;
-byte temp;
+byte           temp;
 
 void setup() {
   // put your setup code here, to run once:
@@ -26,21 +30,10 @@ void setup() {
 }
 
 void loop() {
-//  // put your main code here, to run repeatedly:
-//  if(radio.available()){                                // Если в буфере имеются принятые данные
-//        radio.read(&data, sizeof(data));
-//        Serial.println(data,HEX);
-//  }  
-//  else  { 
-//    Serial.println("No data");
-//    }
     if(radio.available())
     {
       radio.read(&temp, 1);
       Serial.write(temp);
-      ///radio.read(&data, 10);
-      //Serial.write(data, 10);
-      
     } 
    
 }
